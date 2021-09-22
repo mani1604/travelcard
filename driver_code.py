@@ -8,12 +8,13 @@ with open('input_file.csv', 'r') as cf:
     for row in csv_reader:
         c.append(row)
 
-fc = FareCalculator(c)
-data, zones, daily_data = fc.calculate_fare()
+calculate = FareCalculator(c)
+data, zones, daily_data = calculate.calculate_fare()
 
 print(f"\nTotal fare for the input journey: {data['total']}")
-del data['total']
 
+# Below code is for details
+del data['total']
 print("\nZones travelled by the passenger ::")
 for week in zones:
     print(f'Week number: {week} -> {zones[week]["week"]}')

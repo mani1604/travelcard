@@ -41,8 +41,8 @@ class CappingLimit:
     @staticmethod
     def apply_capping(travel_data, week, day, zones_travelled, journey, journey_fare):
         extra_fare = 0
-        z = Zone()
-        zones_travelled = z.get_zones_travelled(zones_travelled, week, day, journey)
+        zone = Zone()
+        zones_travelled = zone.get_zones_travelled(zones_travelled, week, day, journey)
         week_cap_reached, weekly_cap = CappingLimit.is_weekly_cap_reached(travel_data[week]['total'],
                                                                           zones_travelled[week]['week'])
         if week_cap_reached:

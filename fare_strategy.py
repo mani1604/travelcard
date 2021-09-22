@@ -12,8 +12,8 @@ class FareStrategy:
     def get_fare(self):
         util = Utility()
         data = util.load_config()
-        p = Peak(self.date, self.start_time)
-        peak_off_peak = p.get_peak_or_off_peak()
+        peak = Peak(self.date, self.start_time)
+        peak_off_peak = peak.get_peak_or_off_peak()
         fare = data["fares"][self.start_zone][self.end_zone][peak_off_peak]
 
         return fare
