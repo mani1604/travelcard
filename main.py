@@ -1,36 +1,20 @@
-from calculate_daily_fare import DailyFareCalculator
-from calculate_weekly_fare import WeeklyFareCalculator
 import csv
-
-# c = [('20-09-2021', '10:20', 2, 1), ('20-09-2021', '10:45', 1, 1), ('20-09-2021', '16:15', 1, 1),
-#      ('20-09-2021', '18:15', 1, 1), ('21-09-2021', '10:00', 1, 2), ('21-09-2021', '12:00', 2, 2),
-#      ('21-09-2021', '19:00', 2, 2), ('21-09-2021', '21:00', 2, 1), ('21-09-2021', '22:30', 1, 1),
-#      ('21-09-2021', '23:00', 1, 1), ('22-09-2021', '08:00', 1, 1), ('22-09-2021', '10:00', 1, 1),
-#      ('22-09-2021', '14:30', 1, 1), ('22-09-2021', '16:00', 1, 1), ('22-09-2021', '20:00', 1, 1),
-#      ('23-09-2021', '10:00', 2, 2), ('23-09-2021', '14:00', 2, 2), ('23-09-2021', '18:00', 2, 2),
-#      ('23-09-2021', '20:15', 2, 2), ('23-09-2021', '23:00', 2, 2), ('24-09-2021', '10:20', 2, 1),
-#      ('24-09-2021', '10:45', 1, 1), ('24-09-2021', '16:15', 1, 1), ('24-09-2021', '18:15', 1, 1),
-#      ('24-09-2021', '21:15', 1, 1), ('25-09-2021', '10:00', 1, 2), ('25-09-2021', '12:00', 2, 2),
-#      ('25-09-2021', '19:00', 2, 2), ('25-09-2021', '21:00', 2, 1), ('25-09-2021', '22:30', 1, 1),
-#      ('25-09-2021', '23:00', 1, 1), ('26-09-2021', '10:00', 1, 2), ('26-09-2021', '12:00', 2, 2),
-#      ('26-09-2021', '19:00', 2, 2), ('26-09-2021', '21:00', 2, 1), ('26-09-2021', '22:30', 1, 1),
-#      ('26-09-2021', '23:00', 1, 1)]
+from calculate_fare import FareCalculator
 
 c = list()
 with open('file.csv', 'r') as cf:
     csv_reader = csv.reader(cf, delimiter=',')
     for row in csv_reader:
         c.append(row)
-        print(row)
 
-dfc = DailyFareCalculator(c)
-daily_fare_details = dfc.calculate_capped_fare()
-print(daily_fare_details)
-wfc = WeeklyFareCalculator(daily_fare_details)
-weekly_details = wfc.calculate_capped_fare()
-print(weekly_details)
+fc = FareCalculator(c)
 total = 0
-for week in weekly_details:
-    total += weekly_details[week]
+data, zones, daily_data = fc.calculate_fare()
+print(data)
+print(zones)
+print(daily_data)
+for week in data:
+    total += data[week]['total']
 
 print(total)
+

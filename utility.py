@@ -27,3 +27,9 @@ class Utility:
         m = int(m)
         d = int(d)
         return datetime.date(y, m, d).isocalendar()[1]
+
+    @classmethod
+    def is_valid_zone(cls, zone):
+        if zone in cls.zones:
+            return True
+        return False
