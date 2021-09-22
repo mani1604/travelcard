@@ -1,5 +1,6 @@
 import json
 import datetime
+from tigercard_execption import InvalidZone
 
 
 class Utility:
@@ -29,7 +30,6 @@ class Utility:
         return datetime.date(y, m, d).isocalendar()[1]
 
     @classmethod
-    def is_valid_zone(cls, zone):
-        if zone in cls.zones:
-            return True
-        return False
+    def check_zone_validity(cls, zone):
+        if zone not in cls.zones:
+            raise InvalidZone(zone)

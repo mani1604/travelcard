@@ -2,10 +2,8 @@ from zone import Zone
 
 
 class CappingLimit:
-    z = Zone()
-
-    @classmethod
-    def get_daily_limit(cls, zones):
+    @staticmethod
+    def get_daily_limit(zones):
         if zones == {'1', '2'} or zones == {'2', '1'}:
             return 120
         elif zones == {'1'}:
@@ -15,8 +13,8 @@ class CappingLimit:
         else:
             raise Exception
 
-    @classmethod
-    def get_weekly_limit(cls, zones):
+    @staticmethod
+    def get_weekly_limit(zones):
         if zones == {'1', '2'} or zones == {'2', '1'}:
             return 600
         elif zones == {'1'}:
@@ -41,8 +39,10 @@ class CappingLimit:
         return False, None
 
     @staticmethod
-    def put_capping(travel_data, week, day, zones_travelled, journey_fare):
+    def apply_capping(travel_data, week, day, zones_travelled, journey, journey_fare):
         extra_fare = 0
+        z = Zone()
+        zones_travelled = z.get_zones_travelled(zones_travelled, week, day, journey)
         week_cap_reached, weekly_cap = CappingLimit.is_weekly_cap_reached(travel_data[week]['total'],
                                                                           zones_travelled[week]['week'])
         if week_cap_reached:
@@ -50,7 +50,8 @@ class CappingLimit:
             travel_data[week][day] -= extra_fare
             travel_data[week]['total'] -= extra_fare
 
-        daily_cap_reached, daily_cap = CappingLimit.is_daily_cap_reached(travel_data[week][day], zones_travelled[week][day])
+        daily_cap_reached, daily_cap = CappingLimit.is_daily_cap_reached(travel_data[week][day],
+                                                                         zones_travelled[week][day])
         if daily_cap_reached:
             extra_fare = travel_data[week][day] - daily_cap
             travel_data[week][day] -= extra_fare

@@ -1,7 +1,3 @@
-class TigerCardException(Exception):
-    pass
-
-
 class InvalidZone(Exception):
     def __init__(self, zone):
         self.zone = zone
