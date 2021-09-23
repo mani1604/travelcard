@@ -3,42 +3,34 @@ from abc import ABC, abstractmethod
 
 class Generate(ABC):
     @abstractmethod
-    def generate_data(self):
+    def generate_data(self, data, day, fare):
         pass
 
 
 class GenerateWeekly(Generate):
-    def __init__(self, weekly_data, week, day, journey_fare):
-        self.weekly_data = weekly_data
+    def __init__(self, week):
         self.week = week
-        self.day = day
-        self.journey_fare = journey_fare
 
-    def generate_data(self):
-        if self.week in self.weekly_data:
-            if self.day in self.weekly_data[self.week]:
-                self.weekly_data[self.week][self.day] += self.journey_fare
+    def generate_data(self, data, day, fare):
+        if self.week in data:
+            if day in data[self.week]:
+                data[self.week][day] += fare
             else:
-                self.weekly_data[self.week][self.day] = self.journey_fare
+                data[self.week][day] = fare
 
-            if 'total' in self.weekly_data[self.week]:
-                self.weekly_data[self.week]['total'] += self.journey_fare
+            if 'total' in data[self.week]:
+                data[self.week]['total'] += fare
             else:
-                self.weekly_data[self.week]['total'] = self.journey_fare
+                data[self.week]['total'] = fare
         else:
-            self.weekly_data[self.week] = {}
-            self.weekly_data[self.week][self.day] = self.journey_fare
-            self.weekly_data[self.week]['total'] = self.journey_fare
+            data[self.week] = {}
+            data[self.week][day] = fare
+            data[self.week]['total'] = fare
 
 
 class GenerateDaily(Generate):
-    def __init__(self, daily_data, day, fare):
-        self.daily_data = daily_data
-        self.day = day
-        self.fare = fare
-
-    def generate_data(self):
-        if self.day in self.daily_data:
-            self.daily_data[self.day].append(self.fare)
+    def generate_data(self, data, day, fare):
+        if day in data:
+            data[day].append(fare)
         else:
-            self.daily_data[self.day] = [self.fare]
+            data[day] = [fare]

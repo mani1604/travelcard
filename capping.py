@@ -1,4 +1,5 @@
 from zone import Zone
+from tigercard_execption import TigerCardException
 
 
 class CappingLimit:
@@ -11,7 +12,7 @@ class CappingLimit:
         elif zones == {'2'}:
             return 80
         else:
-            raise Exception
+            raise TigerCardException
 
     @staticmethod
     def get_weekly_limit(zones):
@@ -22,7 +23,7 @@ class CappingLimit:
         elif zones == {'2'}:
             return 400
         else:
-            raise Exception
+            raise TigerCardException
 
     @staticmethod
     def is_weekly_cap_reached(total, zones):

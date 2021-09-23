@@ -9,12 +9,13 @@ with open('input_file.csv', 'r') as cf:
         c.append(row)
 
 calculate = FareCalculator(c)
-data, zones, daily_data = calculate.calculate_fare()
+total = calculate.calculate_fare()
 
-print(f"\nTotal fare for the input journey: {data['total']}")
+print(f"\nTotal fare for the input journey: {total}")
 
 # Below code is for details
-del data['total']
+
+zones = calculate.get_zones_travelled()
 print("\nZones travelled by the passenger ::")
 for week in zones:
     print(f'Week number: {week} -> {zones[week]["week"]}')
@@ -23,6 +24,8 @@ for week in zones:
             continue
         print(f'\t{day}: {zones[week][day]}')
 
+daily_data = calculate.get_daily_data()
+print(daily_data)
 print("\nFares per day per journey ::")
 for date in daily_data:
     print(f'{date}=>', end='')
@@ -32,8 +35,8 @@ for date in daily_data:
         i += 1
     print()
 
-print("\nWeekly summary "
-      "::")
+data = calculate.get_weekly_data()
+print("\nWeekly summary ::")
 for d in data:
     print(f'Week number: {d}')
     print(f"\tTotal: {data[d]['total']}")

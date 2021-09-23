@@ -7,13 +7,13 @@ from generate_data import GenerateDaily, GenerateWeekly
 class FareCalculator:
     def __init__(self, journey_details):
         self.journey_details = journey_details
-        self.zones_travelled = dict()
-        self.daily_data = dict()
-        self.out = dict()
+        self._zones_travelled = dict()
+        self._daily_data = dict()
+        self._weekly_data = dict()
+        self.total = 0
 
     def calculate_fare(self):
         cap_limit = CappingLimit()
-        self.out['total'] = 0
         for journey in self.journey_details:
             day = journey[0]
             util = Utility()
@@ -23,11 +23,20 @@ class FareCalculator:
 
             fare = FareStrategy(*journey)
             journey_fare = fare.get_fare()
-            generate_week = GenerateWeekly(self.out, week, day, journey_fare)
-            generate_week.generate_data()
-            updated_fare = cap_limit.apply_capping(self.out, week, day, self.zones_travelled, journey, journey_fare)
-            self.out['total'] += updated_fare
-            generate_daily = GenerateDaily(self.daily_data, day, updated_fare)
-            generate_daily.generate_data()
+            generate_week = GenerateWeekly(week)
+            generate_week.generate_data(self._weekly_data, day, journey_fare)
+            updated_fare = cap_limit.apply_capping(self._weekly_data, week, day, self._zones_travelled, journey, journey_fare)
+            self.total += updated_fare
+            generate_daily = GenerateDaily()
+            generate_daily.generate_data(self._daily_data, day, updated_fare)
 
-        return self.out, self.zones_travelled, self.daily_data
+        return self.total
+
+    def get_weekly_data(self):
+        return self._weekly_data
+
+    def get_daily_data(self):
+        return self._daily_data
+
+    def get_zones_travelled(self):
+        return self._zones_travelled
