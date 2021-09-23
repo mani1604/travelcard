@@ -7,9 +7,9 @@ class Utility:
     zones = ['1', '2']
 
     @staticmethod
-    def load_config():
+    def load_config(file_name='fare_config.json'):
         try:
-            with open('fare_config.json', mode='r') as config_file:
+            with open(file_name, mode='r') as config_file:
                 return json.loads(config_file.read())
         except FileNotFoundError:
             return False

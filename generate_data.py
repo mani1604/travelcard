@@ -27,6 +27,8 @@ class GenerateWeekly(Generate):
             data[self.week][day] = fare
             data[self.week]['total'] = fare
 
+        return data
+
 
 class GenerateDaily(Generate):
     def generate_data(self, data, day, fare):
@@ -34,3 +36,5 @@ class GenerateDaily(Generate):
             data[day].append(fare)
         else:
             data[day] = [fare]
+
+        return data

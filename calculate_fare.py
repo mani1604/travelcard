@@ -25,13 +25,13 @@ class FareCalculator:
             journey_fare = fare.get_fare()
 
             weekly = GenerateWeekly(week)
-            weekly.generate_data(self._weekly_data, day, journey_fare)
+            self._weekly_data = weekly.generate_data(self._weekly_data, day, journey_fare)
 
             updated_fare = cap.apply_capping(self._weekly_data, week, day, self._zones_travelled, journey, journey_fare)
             self.total += updated_fare
 
             daily = GenerateDaily()
-            daily.generate_data(self._daily_data, day, updated_fare)
+            self._daily_data = daily.generate_data(self._daily_data, day, updated_fare)
 
         return self.total
 
