@@ -13,7 +13,7 @@ class FareCalculator:
         self.total = 0
 
     def calculate_fare(self):
-        cap_limit = CappingLimit()
+        cap = CappingLimit()
         for journey in self.journey_details:
             day = journey[0]
             util = Utility()
@@ -23,12 +23,15 @@ class FareCalculator:
 
             fare = FareStrategy(*journey)
             journey_fare = fare.get_fare()
-            generate_week = GenerateWeekly(week)
-            generate_week.generate_data(self._weekly_data, day, journey_fare)
-            updated_fare = cap_limit.apply_capping(self._weekly_data, week, day, self._zones_travelled, journey, journey_fare)
+
+            weekly = GenerateWeekly(week)
+            weekly.generate_data(self._weekly_data, day, journey_fare)
+
+            updated_fare = cap.apply_capping(self._weekly_data, week, day, self._zones_travelled, journey, journey_fare)
             self.total += updated_fare
-            generate_daily = GenerateDaily()
-            generate_daily.generate_data(self._daily_data, day, updated_fare)
+
+            daily = GenerateDaily()
+            daily.generate_data(self._daily_data, day, updated_fare)
 
         return self.total
 
