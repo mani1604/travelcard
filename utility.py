@@ -33,3 +33,4 @@ class Utility:
     def check_zone_validity(cls, zone):
         if zone not in cls.zones:
             raise InvalidZone(zone)
+        return True

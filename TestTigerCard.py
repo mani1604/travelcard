@@ -19,20 +19,32 @@ class TestCases(unittest.TestCase):
         peak_or_not = peak.get_peak_or_off_peak()
         self.assertEqual(peak_or_not, 'peak')
 
+        peak1 = Peak('14-09-2021', '16:00')
+        peak_or_not1 = peak1.get_peak_or_off_peak()
+        self.assertEqual(peak_or_not1, 'off-peak')
+
     def test_is_weekend(self):
         util = Utility()
-        weekend = util.is_weekend('19-09-2021')
-        self.assertEqual(weekend, True)
+        weekend1 = util.is_weekend('19-09-2021')
+        self.assertEqual(weekend1, True)
+
+        weekend2 = util.is_weekend('17-09-2021')
+        self.assertEqual(weekend2, False)
 
     def test_get_week_num(self):
         util = Utility()
         week_num = util.get_week_num('19-09-2021')
         self.assertEqual(week_num, 37)
-        assert week_num == 37
+
+        week_num1 = util.get_week_num('05-01-2021')
+        self.assertEqual(week_num1, 1)
 
     def test_check_zone_validity(self):
         util = Utility()
         self.assertRaises(Exception, util.check_zone_validity, '3')
+
+        valid = util.check_zone_validity('1')
+        self.assertEqual(True, valid)
 
     def test_load_config(self):
         util = Utility()
